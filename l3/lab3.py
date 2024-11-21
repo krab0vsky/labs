@@ -17,14 +17,17 @@ def valid(word):
 def transform_number(num):
     dc = {}
     trans = []
+    ch = 0
     for d in num:
         if d in dc and d in inter:
             trans.append(inter[d])
+            ch += 1
         else:
             trans.append(d)
             dc[d] = 1
-
-    return ''.join(trans)
+    if ch > 0:
+        return ''.join(trans)
+    else: return ''.join('')
 
 def proc(path):
     res = []
@@ -36,9 +39,10 @@ def proc(path):
                 if valid(word):
                     trans_line.append(transform_number(word))
                 else:
-                    trans_line.append(word)
+                    continue
+                    
             res.append(' '.join(trans_line))
     for r in res:
         print(r)
 
-proc('l3/inp.txt')
+proc('inp.txt')
