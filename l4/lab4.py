@@ -12,24 +12,31 @@ def transform_number(match):
     num = match.group(0)
     dc = {}
     trans = []
+    ch = 0
     for d in num:
         if d in dc and d in inter:
             trans.append(inter[d])
+            ch+=1
         else:
             trans.append(d)
             dc[d] = 1
-
-    return ''.join(trans)
+    if ch > 0:
+        return ''.join(trans)
+    else: return ''.join('')
 
 def proc(path):
-    octal_number_pattern = r'\b3[0-7]+\b'
+    octmin = r'\b3[0-7]+\b'
     res = []
     with open(path, 'r', encoding='utf-8') as file:
         for line in file:
-            # Заменяем каждое восьмеричное число, подходящее под условия
-            transformed_line = re.sub(octal_number_pattern, transform_number, line)
-            res.append(transformed_line.strip())
-    for r in res:
-        print(r)
+            
+            for m in re.finditer(octmin,line):
+                transformed_line = re.sub(octmin, transform_number, m[0])
+                res.append(transformed_line)
 
-proc('l4/inp.txt')
+
+    for r in res:
+        print(r,end=" ")
+
+proc('inp.txt')
+
