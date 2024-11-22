@@ -12,12 +12,18 @@ inter = {
 }
 
 def valid(word):
+    if word[0] == '-':
+        word = word[1:]  
     return len(word) > 0 and word[0] == '3' and all('0' <= ch <= '7' for ch in word) and int(word, 8) % 2 == 1
 
 def transform_number(num):
     dc = {}
     trans = []
     ch = 0
+    is_negative = num[0] == '-' 
+    if is_negative:
+        num = num[1:]  
+
     for d in num:
         if d in dc and d in inter:
             trans.append(inter[d])
@@ -25,9 +31,15 @@ def transform_number(num):
         else:
             trans.append(d)
             dc[d] = 1
+
+    result = ''.join(trans)
+    if is_negative:
+        result = '-' + result  
+
     if ch > 0:
-        return ''.join(trans)
-    else: return ''.join('')
+        return result
+    else:
+        return ''
 
 def proc(path):
     res = []
